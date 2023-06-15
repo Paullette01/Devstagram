@@ -9,7 +9,7 @@
         <!-- Insertar estilo de dropzone-->
         @stack('style')
     </head>
-    <body class="bg-[#1c1917]">
+    <body class="">
         <!-- Encabezado de la pagina-->
         <header class="p-5 boreder-b bg-white shadow">
             <div class="container mx-auto flex justify-between items-center">
@@ -29,9 +29,9 @@
                         </a>
                         <a class="font-bold text-gray-600 text-sm" href="#">
                             Hola:
-                            <span class="font-normal">
+                            <a href="{{route('post.index')}}" class="font-normal">
                                 {{auth()->user()->username}}
-                            </span>
+                            </a>
                         </a>
                         <!-- Agregando seguridad al logout -->
                         <form methos="POST" action="{{route('logout')}}">

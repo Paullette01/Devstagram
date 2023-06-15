@@ -10,8 +10,9 @@
         </div>
         <div class="md:w-4/12 bg-white p-6 rounded-lg shadow-xl">
             <!-- Formulario de registro -->
-            <form action="/file-upload" class="dropzone" id="my-awesome-dropzone">
-            </form>
+            <form action ="{{route('imagenes.store')}}" method="POST" class="dropzone " enctype="multipart/form-data" id="dropzone" >
+            @csrf
+        </form>
             <script>
                 Dropzone.options.myGreatDropzone = { // camelized version of the `id`
                     paramName: "file", // The name that will be used to transfer the file

@@ -1,28 +1,33 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
 
 class ImagenController extends Controller
 {
-    //Metodo para almacenar IMAGES
     public function store(Request $request){
-        //Identificar el archivo que se sube en dropzone
+
         $imagen = $request->file('file');
-        //
-        //return response()->json();
-        //Generar un ID unico para cada imagen para cargarse al server
-        $nombreImagen =Str::uuid().".".$imagen->extension();
-        //Utilizaoms intervetion Image para cargarse al server
+        //return response()->json(['imagen'=>$imagen->extension()]);
+
+        //Generar un id unico para cada una de las imagenes que se cargan al server
+        $nombreImagen = Str::uuid().'.'. $imagen->extension();
+
+        //Implementar intervention image
         $imagenServidor = Image::make($imagen);
-        //Agregamos efectos a la imagen
+
+        //Agregamos efectos de intervention image: indicamos la medida de cada imagen
         $imagenServidor->fit(1000,1000);
-        //Movemos la imagen de memoria(contenedor Dropzone) a una ubicacion fisica del server
-        $imagenPath = public_path('uploads') . "/".$nombreImagen;
+
+        //Movemos la imagen a un lugar fisico del server
+        $imagenPath = public_path('uploads').'/'.$nombreImagen;
+
         $imagenServidor->save($imagenPath);
-        //Verificar que el npmbre de archivo sea unico
-        return response()->json(['imagen'=>$nombreImagen])
+
+        //Verificar que el nombre se ponga como unico
+        return response()->json(['imagen'=>$nombreImagen]);
+
     }
 }

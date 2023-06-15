@@ -47,15 +47,11 @@ Route::post('/login',[LoginController::class, 'store']);
 //Ruta para logout
 Route::get('/logout',[LogoutController::class,'store'])->name('logout');
 
-//Ruta para registro de servicios
-Route::get('/services',[RegisterService::class,'index'])->name("registerS");
-Route::post('/services',[RegisterService::class,'store'])->name("serviceR");
-
 //Rutaa para el formulario de post de publicacion
 Route::get('/post/create',[PostController::class,'create'])->name('post.create');
 
-//Ruta para cargar Imagen
-Route::post('/imagenes',[ImagenController::class,'store'])->name('images.store');
+Route::post('/post/create',[PostController::class,'store']);
 
-//Ruta para hacer el post de la imagen
-Route::get('/postIm',[PostImagenController::class,'index'])->name("postIm");
+
+//Ruta para cargar Imagen
+Route::post('/imagenes',[ImagenController::class,'store'])->name('imagenes.store');

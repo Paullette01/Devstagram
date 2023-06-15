@@ -18,7 +18,7 @@
             
         </div>
         <div class="md:w-1/2 p-10 bg-white rounded-lg shadow-xl mt-10 mt:mt-0">
-            <form action="#" method="POST" novalidate>
+            <form action="{{route('post.create')}}" method="POST">
                 @csrf
                 <div class="mb-5">
                     <label for="titulo" class="mb-2 block uppercase text-gray-500 font-bold">
@@ -39,40 +39,24 @@
                         <p class="bg-red-500 text-white my-2 rounded-lgg text-center">{{$message}}</p>
                     @enderror
                     <label for="titulo" class="mb-2 block uppercase text-gray-500 font-bold">
-                        Titulo
+                        Descripcion
                     </label>
-                    <input
+                    <textarea
                     id="titulo"
-                    name="titulo"
+                    name="descripcion"
                     type="text"
-                    placeholder="Titulo de la publicacion"
+                    placeholder="Descripcion de la publicacion"
                     class="border p-3 w-full rounded-lg
                         @error('titulo')
                             border-red-500
                         @enderror"
                         value="{{old('titulo')}}"
-                    >
-                    @error('titulo')
+                    ></textarea>
+                    @error('descripcion')
                         <p class="bg-red-500 text-white my-2 rounded-lgg text-center">{{$message}}</p>
                     @enderror
-                    <label for="titulo" class="mb-2 block uppercase text-gray-500 font-bold">
-                        Titulo
-                    </label>
-                    <textarea
-                    id="titulo"
-                    name="titulo"
-                    type="text"
-                    placeholder="Titulo de la publicacion"
-                    class="border p-3 w-full rounded-lg
-                        @error('titulo')
-                            border-red-500
-                        @enderror"
-                        {{old('titulo')}}
-                    >
-                    </textarea>
-                    @error('titulo')
-                        <p class="bg-red-500 text-white my-2 rounded-lgg text-center">{{$message}}</p>
-                    @enderror
+
+                    <input type="hidden" name="imagen" id="imagen" value="">
                 </div>
                 <input
                     type="submit"

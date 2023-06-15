@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\User;
+use App\Models\Post;
+
 
 class PostController extends Controller
 {
@@ -15,17 +18,45 @@ class PostController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index(Request $request)
     {
         //Aplicamos un helper para revisar que el usuario esta autenciado
         //dd(auth()->user());
-        $servicios = DB::table('services')->where('user_id',auth()->user()->id)->get();
-        return view('dashboard')->with('servicios',$servicios);
+
+        $user = $request->user();
+
+        $posts = $user->posts;
+    
+        return view('dashboard', compact('posts'));
     }
 
-    //Crear metodo create para mostrar el formulario de carga de post de publicacion
     public function create()
     {
+        //Aplicamos un helper para revisar que el usuario esta autenciado
+        //dd(auth()->user());
         return view('posts.create');
+    }
+    
+    public function store(Request $request){
+        $this->validate($request, [
+            'titulo' => 'required|max:255',
+            'descripcion' => 'required',
+            'imagen' => 'required'
+        ]);
+        
+         // Crear una instancia del modelo Post
+        $post = new Post();
+
+        // Asignar los valores a las propiedades del modelo
+        $post->titulo = $request->titulo;
+        $post->descripcion = $request->descripcion;
+        $post->imagen = $request->imagen;
+        $post->user_id = auth()->user()->id; // Asignar el ID del usuario actual, si corresponde
+
+        // Guardar el modelo en la base de datos
+        $post->save();
+        
+
+        return redirect()->route('post.index', auth()->user()->username);
     }
 }
