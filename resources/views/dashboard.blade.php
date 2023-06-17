@@ -2,7 +2,6 @@
 @section('titulo')
     Dashboard de Servicios
 @endsection
-
 @section('contenido')
 
     <div class="flex justify-center">
@@ -31,26 +30,10 @@
         </div>
         
     </div>
-    <table>
-    <thead>
-        <tr>
-            <th>Título</th>
-            <th>Descripción</th>
-            <th>Imagen</th>
-            <th>User ID</th>
-        </tr>
-    </thead>
-    <tbody>
+    <div class = "w-full pb-16 flex flex-wrap  mt-6">
         @foreach ($posts as $post)
-            <tr>
-                <td>{{ $post->titulo }}</td>
-                <td>{{ $post->descripcion }}</td>
-                <td><img style="max-width:100px;"src="{{ asset('uploads/' . $post->imagen) }}" alt="Imagen"></td>
-                <td>{{ $post->user_id }}</td>
-            </tr>
+         <img class= "rounded ml-10 mt-10" style="min-width:300px; max-width: 300px; "src="{{ asset('uploads/' . $post->imagen) }}" alt="Imagen">
         @endforeach
-    </tbody>
-</table>
-
-
+        
+    </div>
 @endsection
