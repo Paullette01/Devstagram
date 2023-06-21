@@ -8,6 +8,9 @@ use App\Http\Controllers\ImagenController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\PostImagenController;
+use App\Http\Controllers\PostDetailsController;
+use App\Http\Controllers\ComentarioController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -52,6 +55,11 @@ Route::get('/post/create',[PostController::class,'create'])->name('post.create')
 
 Route::post('/post/create',[PostController::class,'store']);
 
-
 //Ruta para cargar Imagen
 Route::post('/imagenes',[ImagenController::class,'store'])->name('imagenes.store');
+
+//Ruta para publicar un comentario
+Route::post('/comentario',[ComentarioController::class, 'store'])->name('comentario.store');
+
+//Ruta para ver detalles de publicaciones
+Route::get('/postDetails/{id}', [PostDetailsController::class,'index'])->name("postDetails.index");
