@@ -34,6 +34,12 @@
         @foreach ($posts as $post)
          <img class= "rounded ml-10 mt-10" style="min-width:300px; max-width: 300px; "src="{{ asset('uploads/' . $post->imagen) }}" alt="Imagen">
         @endforeach
-        
-    </div>
+
+        <div class = "flex items-center justify-center w-full text-white font-bold">
+                <a class = "rounded bg-gray-800 cursor-pointer" href = "{{route('post.index', ['accion' => 'retroceder' ,'numeroPagina' => $numeroPagina])}}">&#8592;</a>
+
+                <p class = "ml-5 text-gray-500">{{$numeroPagina}} </p>
+
+                <a class = "rounded bg-gray-800 cursor-pointer" href ="{{route('post.index', ['accion' => 'avanzar','numeroPagina' =>$numeroPagina])}}">&#8594;</a>
+        </div>
 @endsection

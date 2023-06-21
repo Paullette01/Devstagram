@@ -22,16 +22,52 @@ class PostController extends Controller
     {
         //Aplicamos un helper para revisar que el usuario esta autenciado
         //dd(auth()->user());
+        $numeroPagina = $request -> numeroPagina;
 
-        $user = $request->user();
-
-        $posts = $user->posts;
+        $accion = $request -> accion;
     
-        return view('dashboard', compact('posts'));
+
+        $user = auth()->user();
+
+            if($numeroPagina == null){
+                $numeroPagina = 1;
+            }
+            
+            if($accion == null){
+    
+            }
+                else{
+
+                    if($accion == 'retroceder'){
+                        $numeroPagina -=1;
+                    }
+
+                        else{
+                            $numeroPagina+=1;
+                        }
+                }
+            $inicio = ($numeroPagina-1)*7;
+            $fin = $inicio+6;
+
+            if($numeroPagina < 1){
+                $numeroPagina = 1;
+            }
+
+            $post = Post::where('user_id', $user->id)
+            ->offset($inicio)
+            ->limit($fin - $inicio + 1)
+            ->get();
+        
+        if($post->count() == 0){
+            $numeroPagina -=1;
+            $inicio = ($numeroPagina-1)*7;
+            $fin = $inicio+6;
+        } 
+
+        return view('dashboard', ['posts' => $post, 'numeroPagina'=> $numeroPagina]);
     }
 
-    public function create()
-    {
+    public function create(){
         //Aplicamos un helper para revisar que el usuario esta autenciado
         //dd(auth()->user());
         return view('posts.create');
