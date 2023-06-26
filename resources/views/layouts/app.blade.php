@@ -4,8 +4,13 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>@yield('titulo')</title>
-        @vite('resources/css/app.css')
-        @vite('resources/js/app.js')
+        
+<script src="https://cdn.tailwindcss.com"></script>
+            @vite('resources/css/app.css')
+            @vite('resources/js/app.js')
+            <link rel="preconnect" href="https://fonts.bunny.net">
+            <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
+            <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
         <!-- Insertar estilo de dropzone-->
         @stack('style')
     </head>
@@ -29,7 +34,7 @@
                         </a>
                         <a class="font-bold text-gray-600 text-sm" href="#">
                             Hola:
-                            <a href="{{route('post.index')}}" class="font-normal">
+                            <a href="{{route('post.index',['user'=>auth()->user()])}}" class="font-normal">
                                 {{auth()->user()->username}}
                             </a>
                         </a>
@@ -54,7 +59,7 @@
         </header>
         <!-- Contenido de las vistas -->
         <main class="container mx-auto MT-10">
-            <h2 class="font-black text-center text-3xl mb-10 text-white">
+            <h2 class="font-black text-center text-3xl mb-10 text-gray-800">
                 @yield('titulo')
             </h2>
             @yield('contenido')

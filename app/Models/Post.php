@@ -21,6 +21,6 @@ class Post extends Model
   * Relación de autoria de los Posts
  */
     public function user(){
-        return $this->belongsTo(User::class)->select(['name', 'username']);
+        return $this->belongsTo(User::class)->select(['name', 'username','id']);
     }
 }

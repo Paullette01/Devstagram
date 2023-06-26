@@ -7,66 +7,20 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\Post;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 
 class PostController extends Controller
 {
-    //Constructor de la sesion
-    public function __construct()
-    {
-        //Proteger el constructor con autenticacion, es decir antes de ejecutar el metodo index debemos pasar el parametro de autenticacion
-        $this->middleware('auth');
-    }
-
     public function index(Request $request)
     {
-        //Aplicamos un helper para revisar que el usuario esta autenciado
-        //dd(auth()->user());
-        $numeroPagina = $request -> numeroPagina;
-
-        $accion = $request -> accion;
-    
-
-        $user = auth()->user();
-
-            if($numeroPagina == null){
-                $numeroPagina = 1;
-            }
-            
-            if($accion == null){
-    
-            }
-                else{
-
-                    if($accion == 'retroceder'){
-                        $numeroPagina -=1;
-                    }
-
-                        else{
-                            $numeroPagina+=1;
-                        }
-                }
-            $inicio = ($numeroPagina-1)*7;
-            $fin = $inicio+6;
-
-            if($numeroPagina < 1){
-                $numeroPagina = 1;
-            }
-
-            $post = Post::where('user_id', $user->id)
-            ->offset($inicio)
-            ->limit($fin - $inicio + 1)
-            ->get();
-        
-        if($post->count() == 0){
-            $numeroPagina -=1;
-            $inicio = ($numeroPagina-1)*7;
-            $fin = $inicio+6;
-        } 
-
-        return view('dashboard', ['posts' => $post, 'numeroPagina'=> $numeroPagina]);
+        //Obtener el id del usuario actual
+        $user = User::where('id',$request->user)->first();
+        $posts = Post::where('user_id', $user->id)->paginate(2); // 10 es el número de elementos por página
+        $postsTotales = Post::where('user_id',$user->id)->get()->count();
+        return view('dashboard', ['user'=>$user,'posts' => $posts,'postsTotales'=>$postsTotales]);
     }
-
+    
     public function create(){
         //Aplicamos un helper para revisar que el usuario esta autenciado
         //dd(auth()->user());
@@ -93,6 +47,18 @@ class PostController extends Controller
         $post->save();
         
 
-        return redirect()->route('post.index', auth()->user()->username);
+        return redirect()->route('post.index',['user'=>auth()->user()->id]);
     }
+
+    public function destroy($id)
+{
+    // Eliminar post mediante su id
+    $post = Post::find($id);
+    if ($post) {
+        $post->delete();
+    }
+
+    return redirect()->route('post.index',['user'=>auth()->user()->id]);
+}
+
 }

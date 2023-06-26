@@ -48,12 +48,16 @@ Route::get('/login',[LoginController::class,'index'])->name('login');
 Route::post('/login',[LoginController::class, 'store']);
 
 //Ruta para logout
+Route::post('/logout',[LogoutController::class,'store'])->name('logout');
+
 Route::get('/logout',[LogoutController::class,'store'])->name('logout');
 
 //Rutaa para el formulario de post de publicacion
 Route::get('/post/create',[PostController::class,'create'])->name('post.create');
 
 Route::post('/post/create',[PostController::class,'store']);
+
+Route::delete('/post/{id}', [PostController::class,'destroy'])->name('post.destroy');
 
 //Ruta para cargar Imagen
 Route::post('/imagenes',[ImagenController::class,'store'])->name('imagenes.store');

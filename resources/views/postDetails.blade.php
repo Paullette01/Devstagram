@@ -9,6 +9,8 @@
         {{-- Mostrando la imagen --}}
         <img style="width:40%; height:100%;" src="{{asset('uploads/' . $post->imagen)}}">
 
+
+
         <style>
             .scrollable-container {
                 max-height: 40vh;
@@ -30,18 +32,35 @@
 
             {{-- Codigo para calcular los dias de la publicacion --}}
             @php
-                $fechaActual = new DateTime(); // Fecha actual
-                $fechaEspecifica = new DateTime($post->created_at); // Fecha específica
+                $fechaEspecifica = new DateTime($post->fecha);
+                $dia = $fechaEspecifica->format('d'); // Obtener el día en formato dd
+                $mes = $fechaEspecifica->format('m'); // Obtener el mes en formato mm
+                $año = $fechaEspecifica->format('Y'); // Obtener el año en formato YYYY
 
-                $diferencia = $fechaEspecifica->diff($fechaActual); // Diferencia entre las fechas
+                $fechaFormateada = $dia . '/' . $mes . '/' . $año; // Obtener la fecha en formato dd/mm/YYYY
 
-                $dias = $diferencia->days; // Obtener la diferencia en días
             @endphp
 
             {{-- Mostrando el usuario y descripcion --}}
             <div class="w-full flex mt-5 ml-5">
                 <p class=" font-bold"> {{$post->user->name}}</p>
-                <p class="ml-5">Hace {{$dias}} días</p>
+                <p class="ml-5">{{$fechaFormateada}} </p>
+                {{-- Eliminar posts --}}
+                @auth
+
+                    @if(auth()->user()->id === $post->user->id)
+                        
+                        <form action="{{ route('post.destroy', ['id' => $post->id]) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="fit-content">
+                                <img class="ml-5 w-8" src="{{ asset('Imagenes/delete.svg') }}" alt="Imagen de registro de usuario">
+                            </button>
+                        </form>
+                    @endif
+
+                @endauth
+
             </div>
             
             {{-- Comentarios --}}
@@ -52,14 +71,16 @@
                 @foreach ($comentarios as $comentario)
                 <div class="w-full flex mt-5 ml-5 flex-col">
                     @php
-                        $fechaActual = new DateTime(); // Fecha actual
-                        $fechaEspecifica = new DateTime($comentario->fecha); // Fecha específica
+                    
+                        $fechaEspecifica = new DateTime($comentario->fecha);
+                        $dia = $fechaEspecifica->format('d'); // Obtener el día en formato dd
+                        $mes = $fechaEspecifica->format('m'); // Obtener el mes en formato mm
+                        $año = $fechaEspecifica->format('Y'); // Obtener el año en formato YYYY
 
-                        $diferencia = $fechaEspecifica->diff($fechaActual); // Diferencia entre las fechas
+                        $fechaFormateada = $dia . '/' . $mes . '/' . $año; // Obtener la fecha en formato dd/mm/YYYY
 
-                        $dias = $diferencia->days; // Obtener la diferencia en días
                     @endphp
-                    <p class="font-bold">{{$comentario->user->name}} {{$dias}}d</p>
+                    <p class="font-bold">{{$comentario->user->name}} {{$fechaFormateada}}</p>
                     <p>{{$comentario->comentario}}</p>
                 </div>
                 @endforeach

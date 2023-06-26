@@ -13,8 +13,7 @@ class PostDetailsController extends Controller
         $post = Post::find($id);
         //Obtener todos los comentarios
         $comentarios = Comentario::where('post_id',$id)->get();
-
+        
         return view('postDetails', ['post' => $post,'comentarios'=>$comentarios]);
-
     }
 }
